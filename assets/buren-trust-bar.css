@@ -97,6 +97,7 @@
 /* Diseño apilado: ícono arriba, todo centrado (ej. "¿Por qué elegir Büren?") */
 .buren-trust__list--stacked .buren-trust__item {
   flex-direction: column;
+  justify-content: flex-start;
   text-align: center;
   gap: 1rem;
 }
