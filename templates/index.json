@@ -57,13 +57,183 @@
         "quick_add": "standard",
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 40,
+        "padding_top": 24,
+        "padding_bottom": 48
+      }
+    },
+    "buren-trust-bar": {
+      "type": "multicolumn",
+      "blocks": {
+        "col1": {
+          "type": "column",
+          "settings": {
+            "title": "Envío gratis en la RM",
+            "text": "<p>En compras sobre $29.990. Regiones: envío por pagar.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "col2": {
+          "type": "column",
+          "settings": {
+            "title": "Pago seguro",
+            "text": "<p>Webpay y Mercado Pago.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "col3": {
+          "type": "column",
+          "settings": {
+            "title": "10 días de retracto",
+            "text": "<p>Y garantía legal de 6 meses.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "col1",
+        "col2",
+        "col3"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h2",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 24,
+        "padding_bottom": 8
+      }
+    },
+    "buren-why": {
+      "type": "multicolumn",
+      "blocks": {
+        "col1": {
+          "type": "column",
+          "settings": {
+            "title": "Importación directa",
+            "text": "<p>Traemos productos desde distintos mercados para ofrecer soluciones únicas en Chile.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "col2": {
+          "type": "column",
+          "settings": {
+            "title": "Calidad garantizada",
+            "text": "<p>Cada producto es evaluado antes de incorporarlo a nuestro catálogo.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "col3": {
+          "type": "column",
+          "settings": {
+            "title": "Compra segura",
+            "text": "<p>Pagos protegidos y soporte para nuestros clientes.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "col1",
+        "col2",
+        "col3"
+      ],
+      "settings": {
+        "title": "¿Por qué elegir Büren?",
+        "heading_size": "h2",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "buren-faq": {
+      "type": "collapsible-content",
+      "blocks": {
+        "q1": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Cuánto cuesta el envío?",
+            "icon": "truck",
+            "row_content": "<p>En la Región Metropolitana cuesta $3.500 y es gratis en compras sobre $29.990. A regiones el envío es por pagar: el costo lo pagas a la empresa de transporte al recibir.</p>",
+            "page": ""
+          }
+        },
+        "q2": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Puedo devolver un producto?",
+            "icon": "return",
+            "row_content": "<p>Sí. Tienes 10 días desde que recibes tu compra para retractarte, con el producto en su estado original. <a href=\"/policies/refund-policy\" title=\"Política de cambios y devoluciones\">Ver política</a>.</p>",
+            "page": ""
+          }
+        },
+        "q3": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Qué garantía tienen los productos?",
+            "icon": "check_mark",
+            "row_content": "<p>Garantía legal de 6 meses por fallas de fabricación.</p>",
+            "page": ""
+          }
+        },
+        "q4": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Cómo puedo pagar?",
+            "icon": "lock",
+            "row_content": "<p>Con Webpay o Mercado Pago. El pago es procesado de forma segura por cada plataforma.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "caption": "",
+        "heading": "Preguntas frecuentes",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "scheme-1",
+        "color_scheme": "scheme-1",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
         "padding_bottom": 48
       }
     }
   },
   "order": [
     "buren-brand-statement",
-    "featured-collection-0"
+    "buren-trust-bar",
+    "featured-collection-0",
+    "buren-why",
+    "buren-faq"
   ]
 }

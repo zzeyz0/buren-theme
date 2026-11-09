@@ -12,13 +12,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "body"
-          }
-        },
         "title": {
           "type": "title",
           "settings": {}
@@ -53,7 +46,7 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
+            "show_dynamic_checkout": false,
             "show_gift_card_recipient": true,
             "buren_trust_1": "Envío a todo Chile",
             "buren_trust_2": "Garantía legal de 6 meses",
@@ -65,12 +58,6 @@
         "description": {
           "type": "description",
           "settings": {}
-        },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
         },
         "buren_pack_almohada": {
           "type": "buren_pack_ladder",
@@ -96,10 +83,27 @@
             "units": "1,4,6",
             "highlight_label": "Más conveniente"
           }
+        },
+        "tab_envio": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Envío",
+            "icon": "truck",
+            "content": "<p><strong>Región Metropolitana:</strong> $3.500, o gratis en compras sobre $29.990.</p><p><strong>Regiones:</strong> envío por pagar; el costo lo pagas a la empresa de transporte al recibir.</p>",
+            "page": ""
+          }
+        },
+        "tab_cambios": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Cambios y garantía",
+            "icon": "return",
+            "content": "<p>Tienes 10 días desde que recibes tu compra para retractarte, con el producto en su estado original.</p><p>Todos los productos tienen garantía legal de 6 meses por fallas de fabricación.</p><p><a href=\"/policies/refund-policy\" title=\"Política de cambios y devoluciones\">Ver política completa</a></p>",
+            "page": ""
+          }
         }
       },
       "block_order": [
-        "vendor",
         "title",
         "rating",
         "price",
@@ -110,7 +114,8 @@
         "quantity_selector",
         "buy_buttons",
         "description",
-        "share"
+        "tab_envio",
+        "tab_cambios"
       ],
       "settings": {
         "enable_sticky_info": true,

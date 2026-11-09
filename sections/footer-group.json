@@ -26,13 +26,21 @@
         "link_list_QpBG6D": {
           "type": "link_list",
           "settings": {
-            "heading": "Más Información",
-            "menu": "footer"
+            "heading": "Ayuda",
+            "menu": "footer-v2"
+          }
+        },
+        "buren_contact": {
+          "type": "text",
+          "settings": {
+            "heading": "Contacto",
+            "subtext": "<p>¿Tienes dudas? Escríbenos a <a href=\"mailto:burenltda@gmail.com\" title=\"Enviar correo a Büren\">burenltda@gmail.com</a></p>"
           }
         }
       },
       "block_order": [
-        "link_list_QpBG6D"
+        "link_list_QpBG6D",
+        "buren_contact"
       ],
       "settings": {
         "color_scheme": "scheme-3",
