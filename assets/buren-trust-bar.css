@@ -131,3 +131,19 @@
     justify-content: center;
   }
 }
+
+/* Logos más visibles en la barra. El SVG de Mercado Pago trae mucho aire
+   interno, por eso se le da más alto que a Webpay. */
+.buren-trust .buren-payments--trust .buren-payments__item {
+  height: 3.6rem;
+  padding: 0 0.8rem;
+}
+
+.buren-trust .buren-payments--trust .buren-payments__item img {
+  height: 2.4rem;
+  max-width: 9rem;
+}
+
+.buren-trust .buren-payments--trust .buren-payments__item img[alt="Mercado Pago"] {
+  height: 3.4rem;
+}
