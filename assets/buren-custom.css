@@ -991,7 +991,12 @@ button[type="submit"],
   font-size: 1.1rem;
 }
 
+.cart-drawer .cart__ctas {
+  flex-wrap: wrap;
+}
+
 .buren-cart-trust {
+  flex: 0 0 100%;
   margin: 1rem 0 0;
   font-size: 1.2rem;
   line-height: 1.4;

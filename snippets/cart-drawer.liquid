@@ -466,7 +466,6 @@
                   </tbody>
                 </table>
               </div>
-              {%- render 'buren-cart-upsell' -%}
             {%- endif -%}
             <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
             <p id="CartDrawer-LineItemStatus" class="visually-hidden" aria-hidden="true" role="status">
@@ -475,6 +474,8 @@
           </div>
           <div id="CartDrawer-CartErrors" role="alert"></div>
         </form>
+        {%- comment -%} Fuera de CartDrawer-Form: un <form> anidado se descarta al parsear el HTML. {%- endcomment -%}
+        {%- render 'buren-cart-upsell' -%}
       </cart-drawer-items>
       <div class="drawer__footer">
         {%- if settings.show_cart_note -%}
