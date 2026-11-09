@@ -15,7 +15,8 @@
   se filtrarian al CSS global si se insertaran en la pagina.
 
   Accepts:
-  - context: 'product' (por defecto) o 'footer'. En el footer el bloque se
+  - context: 'product' (por defecto), 'footer' o 'trust' (barra de garantías: solo
+    logos de pasarelas, sin nota ni marcas de tarjeta). En el footer el bloque se
     controla con el ajuste "Mostrar iconos de pago" de la seccion, por eso ahi
     no se revisa buren_payment_icons_enabled.
 
@@ -27,7 +28,7 @@
 {%- liquid
   assign ctx = context | default: 'product'
 
-  if ctx == 'footer'
+  if ctx == 'footer' or ctx == 'trust'
     assign hide_block = false
   else
     assign hide_block = false
@@ -112,8 +113,8 @@
     }
   {%- endstyle -%}
 
-  <div class="buren-payments{% if ctx == 'footer' %} buren-payments--footer{% endif %}">
-    {%- if settings.buren_payment_note != blank -%}
+  <div class="buren-payments{% if ctx == 'footer' %} buren-payments--footer{% elsif ctx == 'trust' %} buren-payments--trust{% endif %}">
+    {%- if settings.buren_payment_note != blank and ctx != 'trust' -%}
       <p class="buren-payments__note">{{ settings.buren_payment_note }}</p>
     {%- endif -%}
 
@@ -157,6 +158,7 @@
 
       {%- comment -%} Marcas de tarjeta: SVG oficiales de Shopify {%- endcomment -%}
       {%- assign card_brands = 'visa,master,american_express,diners_club' | split: ',' -%}
+      {%- if ctx == 'trust' -%}{%- assign card_brands = '' | split: ',' -%}{%- endif -%}
       {%- for brand in card_brands -%}
         {%- assign brand_svg = brand | payment_type_svg_tag: class: 'icon icon--full-color' -%}
         {%- if brand_svg != blank -%}

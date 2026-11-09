@@ -1,0 +1,133 @@
+/* Barra de garantías (Büren) — sections/buren-trust-bar.liquid
+   Móvil: filas compactas (ícono a la izquierda). ≥750px: columnas con divisores. */
+
+.buren-trust {
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.buren-trust__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buren-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.buren-trust__icon {
+  flex: 0 0 4.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: var(--buttons-radius, 4px);
+  background: var(--buren-beige, #e8dfd0);
+  color: var(--buren-black, #111111);
+}
+
+.buren-trust__icon svg {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.buren-trust__icon svg path {
+  fill: currentColor;
+}
+
+.buren-trust__content {
+  min-width: 0;
+}
+
+.buren-trust__title {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgb(var(--color-foreground));
+}
+
+.buren-trust__text {
+  margin: 0.2rem 0 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+@media screen and (min-width: 750px) {
+  .buren-trust__list--2 { grid-template-columns: repeat(2, 1fr); }
+  .buren-trust__list--3 { grid-template-columns: repeat(3, 1fr); }
+  .buren-trust__list--4 { grid-template-columns: repeat(4, 1fr); }
+
+  .buren-trust__list {
+    gap: 0;
+  }
+
+  .buren-trust__item {
+    justify-content: center;
+    padding: 0.4rem 2.4rem;
+  }
+
+  .buren-trust__item + .buren-trust__item {
+    border-left: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .buren-trust__list--inline .buren-trust__item {
+    flex-direction: column;
+    text-align: center;
+    padding: 0.4rem 1.2rem;
+  }
+}
+
+/* Título de sección (opcional), centrado */
+.buren-trust__heading {
+  margin: 0 0 2.4rem;
+  text-align: center;
+}
+
+/* Diseño apilado: ícono arriba, todo centrado (ej. "¿Por qué elegir Büren?") */
+.buren-trust__list--stacked .buren-trust__item {
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+}
+
+.buren-trust__list--stacked .buren-trust__text {
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+@media screen and (min-width: 750px) {
+  .buren-trust__list--stacked .buren-trust__item + .buren-trust__item {
+    border-left: 0;
+  }
+}
+
+/* Logos de pago dentro de un ítem */
+.buren-trust .buren-payments--trust {
+  margin-top: 0.6rem;
+  text-align: left;
+}
+
+.buren-trust .buren-payments--trust .buren-payments__list {
+  justify-content: flex-start;
+}
+
+.buren-trust__list--stacked .buren-payments--trust .buren-payments__list {
+  justify-content: center;
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .buren-trust .buren-payments--trust .buren-payments__list {
+    justify-content: center;
+  }
+}

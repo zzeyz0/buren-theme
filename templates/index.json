@@ -62,109 +62,93 @@
       }
     },
     "buren-trust-bar": {
-      "type": "multicolumn",
+      "type": "buren-trust-bar",
       "blocks": {
-        "col1": {
-          "type": "column",
+        "item1": {
+          "type": "item",
           "settings": {
+            "icon": "truck",
             "title": "Envío gratis en la RM",
-            "text": "<p>En compras sobre $29.990. Regiones: envío por pagar.</p>",
-            "link_label": "",
-            "link": ""
+            "text": "En compras sobre $29.990. Regiones: por pagar.",
+            "show_payment_logos": false
           }
         },
-        "col2": {
-          "type": "column",
+        "item2": {
+          "type": "item",
           "settings": {
+            "icon": "lock",
             "title": "Pago seguro",
-            "text": "<p>Webpay y Mercado Pago.</p>",
-            "link_label": "",
-            "link": ""
+            "text": "",
+            "show_payment_logos": true
           }
         },
-        "col3": {
-          "type": "column",
+        "item3": {
+          "type": "item",
           "settings": {
+            "icon": "return",
             "title": "10 días de retracto",
-            "text": "<p>Y garantía legal de 6 meses.</p>",
-            "link_label": "",
-            "link": ""
+            "text": "Y garantía legal de 6 meses.",
+            "show_payment_logos": false
           }
         }
       },
       "block_order": [
-        "col1",
-        "col2",
-        "col3"
+        "item1",
+        "item2",
+        "item3"
       ],
       "settings": {
-        "title": "",
+        "heading": "",
         "heading_size": "h2",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
+        "layout": "inline",
         "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
         "padding_top": 24,
-        "padding_bottom": 8
+        "padding_bottom": 24
       }
     },
     "buren-why": {
-      "type": "multicolumn",
+      "type": "buren-trust-bar",
       "blocks": {
-        "col1": {
-          "type": "column",
+        "item1": {
+          "type": "item",
           "settings": {
+            "icon": "box",
             "title": "Importación directa",
-            "text": "<p>Traemos productos desde distintos mercados para ofrecer soluciones únicas en Chile.</p>",
-            "link_label": "",
-            "link": ""
+            "text": "Traemos productos desde distintos mercados para ofrecer soluciones únicas en Chile.",
+            "show_payment_logos": false
           }
         },
-        "col2": {
-          "type": "column",
+        "item2": {
+          "type": "item",
           "settings": {
+            "icon": "check_mark",
             "title": "Calidad garantizada",
-            "text": "<p>Cada producto es evaluado antes de incorporarlo a nuestro catálogo.</p>",
-            "link_label": "",
-            "link": ""
+            "text": "Cada producto es evaluado antes de incorporarlo a nuestro catálogo.",
+            "show_payment_logos": false
           }
         },
-        "col3": {
-          "type": "column",
+        "item3": {
+          "type": "item",
           "settings": {
+            "icon": "chat_bubble",
             "title": "Compra segura",
-            "text": "<p>Pagos protegidos y soporte para nuestros clientes.</p>",
-            "link_label": "",
-            "link": ""
+            "text": "Pagos protegidos y soporte para nuestros clientes.",
+            "show_payment_logos": false
           }
         }
       },
       "block_order": [
-        "col1",
-        "col2",
-        "col3"
+        "item1",
+        "item2",
+        "item3"
       ],
       "settings": {
-        "title": "¿Por qué elegir Büren?",
+        "heading": "¿Por qué elegir Büren?",
         "heading_size": "h2",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
+        "layout": "stacked",
         "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
     "buren-faq": {
