@@ -35,7 +35,9 @@
   endif
 
   if is_valid
-    assign unit_price = options.first.price
+    for option in options limit: 1
+      assign unit_price = option.price
+    endfor
     assign best_index = -1
     assign best_pct = 0
     for option in options
