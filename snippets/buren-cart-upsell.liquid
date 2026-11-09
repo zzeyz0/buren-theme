@@ -1,0 +1,102 @@
+{% comment %}
+  "Completa tu compra" en el carrito lateral (Büren).
+  Muestra hasta 2 productos de la lista configurada en
+  Personalizar tema > Configuración del tema > Carrito > "Completa tu compra (Büren)",
+  excluyendo los que ya están en el carrito y los agotados.
+  Productos de una sola variante: botón "Agregar" (AJAX vía product-form, recarga el drawer).
+  Productos con variantes: enlace a la ficha para elegir.
+
+  Usage:
+  {% render 'buren-cart-upsell' %}
+{% endcomment %}
+
+{%- liquid
+  assign upsell_products = settings.buren_cart_upsell_products
+  assign in_cart_ids = cart.items | map: 'product_id' | join: ','
+  assign in_cart_ids = ',' | append: in_cart_ids | append: ','
+  assign shown = 0
+  assign max_items = 2
+-%}
+
+{%- if cart != empty and upsell_products != blank -%}
+  {%- capture upsell_items -%}
+    {%- for upsell_product in upsell_products -%}
+      {%- liquid
+        if shown >= max_items
+          break
+        endif
+        assign id_token = ',' | append: upsell_product.id | append: ','
+        if in_cart_ids contains id_token or upsell_product.available == false
+          continue
+        endif
+        assign shown = shown | plus: 1
+        assign display_title = upsell_product.title | split: ' | ' | first
+        assign form_id = 'BurenCartUpsell-' | append: upsell_product.id
+      -%}
+      <li class="buren-cart-upsell__item">
+        {%- if upsell_product.featured_image -%}
+          {{
+            upsell_product.featured_image
+            | image_url: width: 112
+            | image_tag:
+              class: 'buren-cart-upsell__image',
+              width: 56,
+              height: 56,
+              loading: 'lazy',
+              alt: display_title
+          }}
+        {%- else -%}
+          <span class="buren-cart-upsell__image"></span>
+        {%- endif -%}
+        <div>
+          <a class="buren-cart-upsell__title" href="{{ upsell_product.url }}">{{ display_title | escape }}</a>
+          <span class="buren-cart-upsell__price">
+            {%- if upsell_product.price_varies -%}
+              {{ 'products.product.price.from_price_html' | t: price: upsell_product.price | money }}
+            {%- else -%}
+              {{ upsell_product.price | money }}
+            {%- endif -%}
+          </span>
+        </div>
+        <div class="buren-cart-upsell__action">
+          {%- if upsell_product.has_only_default_variant -%}
+            <product-form data-section-id="cart-drawer">
+              {%- form 'product', upsell_product, id: form_id, class: 'form', novalidate: 'novalidate' -%}
+                <input type="hidden" name="id" value="{{ upsell_product.selected_or_first_available_variant.id }}">
+                <button
+                  type="submit"
+                  name="add"
+                  class="button button--secondary"
+                  aria-label="Agregar {{ display_title | escape }} al carrito"
+                >
+                  <span>Agregar</span>
+                  {%- render 'loading-spinner' -%}
+                </button>
+                <div class="product-form__error-message-wrapper" role="alert" hidden>
+                  <span class="product-form__error-message"></span>
+                </div>
+              {%- endform -%}
+            </product-form>
+          {%- else -%}
+            <a
+              class="button button--secondary"
+              href="{{ upsell_product.url }}"
+              aria-label="Ver opciones de {{ display_title | escape }}"
+            >
+              Ver opciones
+            </a>
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if shown > 0 -%}
+    <div class="buren-cart-upsell">
+      <h3 class="buren-cart-upsell__heading">{{ settings.buren_cart_upsell_heading | escape }}</h3>
+      <ul class="buren-cart-upsell__list" role="list">
+        {{- upsell_items -}}
+      </ul>
+    </div>
+  {%- endif -%}
+{%- endif -%}

@@ -10,6 +10,7 @@
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
 <style>
   .drawer {
@@ -465,6 +466,7 @@
                   </tbody>
                 </table>
               </div>
+              {%- render 'buren-cart-upsell' -%}
             {%- endif -%}
             <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
             <p id="CartDrawer-LineItemStatus" class="visually-hidden" aria-hidden="true" role="status">
@@ -576,6 +578,9 @@
           >
             {{ 'sections.cart.checkout' | t }}
           </button>
+          {%- if settings.buren_cart_trust != blank -%}
+            <p class="buren-cart-trust">{{ settings.buren_cart_trust | escape }}</p>
+          {%- endif -%}
         </div>
       </div>
     </div>

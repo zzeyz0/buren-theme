@@ -71,6 +71,31 @@
           "settings": {
             "share_label": "Share"
           }
+        },
+        "buren_pack_almohada": {
+          "type": "buren_pack_ladder",
+          "settings": {
+            "heading": "Elige tu opción",
+            "products": [
+              "almohada-cervical-ergonomica",
+              "almohada-cervical-ergonomica-pack-x2-buren"
+            ],
+            "units": "1,2",
+            "highlight_label": "Más conveniente"
+          }
+        },
+        "buren_pack_cajas": {
+          "type": "buren_pack_ladder",
+          "settings": {
+            "heading": "Elige tu opción",
+            "products": [
+              "caja-organizadora-zapatillas",
+              "pack-4-cajas-organizadora-buren",
+              "pack-6-cajas-organizadora-buren"
+            ],
+            "units": "1,4,6",
+            "highlight_label": "Más conveniente"
+          }
         }
       },
       "block_order": [
@@ -79,6 +104,8 @@
         "rating",
         "price",
         "inventory",
+        "buren_pack_almohada",
+        "buren_pack_cajas",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
@@ -103,9 +130,8 @@
     },
     "related-products": {
       "type": "related-products",
-      "disabled": true,
       "settings": {
-        "heading": "You may also like",
+        "heading": "También te puede interesar",
         "heading_size": "h2",
         "products_to_show": 4,
         "columns_desktop": 4,
@@ -115,7 +141,7 @@
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
+        "show_rating": true,
         "padding_top": 0,
         "padding_bottom": 60
       }

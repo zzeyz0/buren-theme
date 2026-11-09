@@ -1466,6 +1466,38 @@
         "label": "Umbral de envío gratis (CLP)",
         "info": "Debe coincidir EXACTAMENTE con la regla real en Configuración > Envíos. Si no coinciden, la barra promete algo que el checkout no cumple.",
         "default": 49990
+      },
+      {
+        "type": "header",
+        "content": "Completa tu compra (Büren)"
+      },
+      {
+        "type": "paragraph",
+        "content": "Sugerencias dentro del carrito lateral. Se muestran hasta 2, sin repetir lo que ya está en el carrito ni productos agotados."
+      },
+      {
+        "type": "text",
+        "id": "buren_cart_upsell_heading",
+        "label": "Título",
+        "default": "Completa tu compra"
+      },
+      {
+        "type": "product_list",
+        "id": "buren_cart_upsell_products",
+        "label": "Productos sugeridos",
+        "info": "En orden de prioridad. Productos con variantes muestran \"Ver opciones\" en vez de \"Agregar\".",
+        "limit": 6
+      },
+      {
+        "type": "header",
+        "content": "Garantías en el carrito (Büren)"
+      },
+      {
+        "type": "text",
+        "id": "buren_cart_trust",
+        "label": "Texto bajo el botón de pago",
+        "info": "Déjalo vacío para ocultarlo. Debe ser coherente con las políticas de la tienda.",
+        "default": "Envío a todo Chile · 10 días de retracto · Pago 100% seguro"
       }
     ]
   },

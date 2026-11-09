@@ -1,0 +1,111 @@
+{% comment %}
+  Escalera de packs (Büren).
+  Enlaza la versión unitaria de un producto con sus packs y muestra el ahorro real,
+  calculado contra el precio del producto unitario multiplicado por las unidades del pack.
+  No usa precios de comparación: el "precio por separado" es un precio que la tienda cobra hoy.
+
+  Se configura en la ficha de producto > bloque "Escalera de packs (Büren)":
+  - products: producto unitario primero, luego los packs
+  - units: unidades de cada producto, mismo orden, separadas por coma (ej. "1,4,6")
+  Solo se muestra en las fichas de los productos que están en la lista.
+
+  Accepts:
+  - block: {Object} bloque de la sección
+  - product: {Object} producto actual
+
+  Usage:
+  {% render 'buren-pack-ladder', block: block, product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign options = block.settings.products
+  assign units_list = block.settings.units | remove: ' ' | split: ','
+  assign in_group = false
+
+  for option in options
+    if option.id == product.id
+      assign in_group = true
+      break
+    endif
+  endfor
+
+  assign is_valid = false
+  if in_group and options.count > 1 and units_list.size == options.count
+    assign is_valid = true
+  endif
+
+  if is_valid
+    assign unit_price = options.first.price
+    assign best_index = -1
+    assign best_pct = 0
+    for option in options
+      assign units = units_list[forloop.index0] | plus: 0
+      if units < 1
+        assign is_valid = false
+        break
+      endif
+      assign regular = unit_price | times: units
+      assign savings = regular | minus: option.price
+      if savings > 0 and option.available
+        assign pct = savings | times: 100.0 | divided_by: regular
+        if pct > best_pct
+          assign best_pct = pct
+          assign best_index = forloop.index0
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+{%- if is_valid -%}
+  <nav class="buren-pack-ladder" aria-labelledby="BurenPackLadder-{{ block.id }}" {{ block.shopify_attributes }}>
+    <p id="BurenPackLadder-{{ block.id }}" class="buren-pack-ladder__heading">
+      {{- block.settings.heading | escape -}}
+    </p>
+    <ul class="buren-pack-ladder__list" role="list">
+      {%- for option in options -%}
+        {%- liquid
+          assign units = units_list[forloop.index0] | plus: 0
+          assign regular = unit_price | times: units
+          assign savings = regular | minus: option.price
+          assign per_unit = option.price | divided_by: units
+          assign is_current = false
+          if option.id == product.id
+            assign is_current = true
+          endif
+        -%}
+        <li>
+          <a
+            href="{{ option.url }}"
+            class="buren-pack-ladder__option{% if is_current %} buren-pack-ladder__option--current{% endif %}{% unless option.available %} buren-pack-ladder__option--sold-out{% endunless %}"
+            {% if is_current %}
+              aria-current="page"
+            {% endif %}
+          >
+            <span class="buren-pack-ladder__name">
+              {%- if units == 1 -%}
+                1 unidad
+              {%- else -%}
+                Pack {{ units }} unidades
+              {%- endif -%}
+              {%- if forloop.index0 == best_index and block.settings.highlight_label != blank -%}
+                <span class="buren-pack-ladder__badge">{{ block.settings.highlight_label | escape }}</span>
+              {%- endif -%}
+            </span>
+            <span class="buren-pack-ladder__price">{{ option.price | money }}</span>
+            <span class="buren-pack-ladder__meta">
+              {%- if option.available == false -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- elsif savings > 0 -%}
+                {%- assign pct_display = savings | times: 100.0 | divided_by: regular | round -%}
+                {{ per_unit | money }} c/u · Ahorras {{ savings | money }} ({{ pct_display }}%)
+              {%- elsif units > 1 -%}
+                {{ per_unit | money }} c/u
+              {%- endif -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{%- endif -%}
