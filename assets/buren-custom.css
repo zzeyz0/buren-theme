@@ -779,9 +779,9 @@ button[type="submit"],
   /* Botón: reducir fuente y padding para que no se parta */
   .quick-add__submit,
   .card__information .button {
-    font-size: 0.75rem !important;
+    font-size: 1.2rem !important;
     letter-spacing: 0.05rem !important;
-    padding: 0.75rem 0.5rem !important;
+    padding: 0.8rem 0.6rem !important;
     min-height: 44px;
     line-height: 1.2;
   }
@@ -793,12 +793,12 @@ button[type="submit"],
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: 0.875rem;
+    font-size: 1.3rem;
   }
 
   /* Precio: tamaño coherente con el nuevo layout compacto */
   .card-information .price {
-    font-size: 0.9375rem;
+    font-size: 1.4rem;
   }
 }
 
