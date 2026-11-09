@@ -1,0 +1,98 @@
+{% comment %}
+  Renders the free shipping progress bar.
+
+  El umbral se configura en Personalizar tema > Carrito > "Umbral de envío gratis".
+  IMPORTANTE: debe coincidir con la regla real en Configuración > Envíos.
+
+  Usage:
+  {% render 'buren-free-shipping-bar' %}
+{% endcomment %}
+
+{%- liquid
+  assign threshold = settings.buren_free_shipping_threshold | times: 100
+
+  if settings.buren_free_shipping_bar_enabled and threshold > 0
+    assign remaining = threshold | minus: cart.total_price
+    assign progress = cart.total_price | times: 100.0 | divided_by: threshold
+
+    if progress > 100
+      assign progress = 100
+    endif
+  else
+    assign threshold = 0
+  endif
+-%}
+
+{%- if threshold > 0 -%}
+  {%- style -%}
+    .buren-shipping-bar {
+      padding: 1.2rem 0 1.4rem;
+      border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+      margin-bottom: 1.2rem;
+    }
+
+    .buren-shipping-bar__text {
+      margin: 0 0 0.8rem;
+      font-size: 1.4rem;
+      line-height: 1.4;
+      text-align: center;
+      color: rgb(var(--color-foreground));
+    }
+
+    .buren-shipping-bar__amount {
+      font-weight: 600;
+    }
+
+    .buren-shipping-bar__track {
+      position: relative;
+      width: 100%;
+      height: 0.6rem;
+      border-radius: 0.6rem;
+      background: rgba(var(--color-foreground), 0.1);
+      overflow: hidden;
+    }
+
+    .buren-shipping-bar__fill {
+      display: block;
+      height: 100%;
+      border-radius: 0.6rem;
+      background: rgb(var(--color-foreground));
+      transition: width 0.4s ease;
+    }
+
+    .buren-shipping-bar--complete .buren-shipping-bar__fill {
+      background: #2e7d32;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .buren-shipping-bar__fill {
+        transition: none;
+      }
+    }
+  {%- endstyle -%}
+
+  <div
+    class="buren-shipping-bar{% if remaining <= 0 %} buren-shipping-bar--complete{% endif %}"
+    role="status"
+  >
+    <p class="buren-shipping-bar__text">
+      {%- if remaining > 0 -%}
+        Te faltan
+        <span class="buren-shipping-bar__amount">{{ remaining | money }}</span>
+        para el envío GRATIS
+      {%- else -%}
+        🎉 ¡Tienes envío GRATIS!
+      {%- endif -%}
+    </p>
+
+    <div
+      class="buren-shipping-bar__track"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="{{ progress | round }}"
+    >
+      <span class="buren-shipping-bar__fill" style="width: {{ progress | round }}%;"></span>
+    </div>
+  </div>
+{%- endif -%}

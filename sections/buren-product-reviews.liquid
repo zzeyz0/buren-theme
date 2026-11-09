@@ -1,0 +1,363 @@
+{{ 'buren-reviews.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'buren-reviews.js' | asset_url }}" defer="defer"></script>
+
+{%- if section.blocks.size > 0 -%}
+  {%- liquid
+    assign total_rating = 0
+    assign review_count = section.blocks.size
+    for block in section.blocks
+      assign total_rating = total_rating | plus: block.settings.rating
+    endfor
+    assign avg_rating = total_rating | divided_by: review_count | round: 1
+    assign avg_floor = avg_rating | floor
+  -%}
+
+  <div class="buren-reviews color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+    <div class="page-width">
+
+      {%- if section.settings.title != blank -%}
+        <div class="buren-reviews__header">
+          <h2 class="buren-reviews__title">{{ section.settings.title }}</h2>
+
+          {%- if section.settings.show_summary -%}
+            <div class="buren-reviews__summary">
+              <div class="buren-reviews__avg-score">{{ avg_rating }}</div>
+              <div class="buren-reviews__summary-right">
+                <div class="buren-reviews__stars" aria-label="{{ avg_rating }} de 5 estrellas">
+                  {%- assign next_star = avg_floor | plus: 1 -%}
+                  {%- assign has_half  = false -%}
+                  {%- if avg_rating != avg_floor -%}{%- assign has_half = true -%}{%- endif -%}
+                  {%- for i in (1..5) -%}
+                    {%- if i <= avg_floor -%}
+                      <span class="buren-reviews__star buren-reviews__star--full">★</span>
+                    {%- elsif i == next_star and has_half -%}
+                      <span class="buren-reviews__star buren-reviews__star--half">★</span>
+                    {%- else -%}
+                      <span class="buren-reviews__star buren-reviews__star--empty">★</span>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                <p class="buren-reviews__count">{{ review_count }} reseñas verificadas</p>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="buren-reviews__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign has_images = false
+            if block.settings.image_1 or block.settings.image_2 or block.settings.image_3
+              assign has_images = true
+            endif
+          -%}
+          <article class="buren-reviews__card" {{ block.shopify_attributes }}>
+
+            <div class="buren-reviews__card-header">
+              <div class="buren-reviews__card-stars" aria-label="{{ block.settings.rating }} de 5 estrellas">
+                {%- for i in (1..5) -%}
+                  {%- if i <= block.settings.rating -%}
+                    <span class="buren-reviews__star buren-reviews__star--full">★</span>
+                  {%- else -%}
+                    <span class="buren-reviews__star buren-reviews__star--empty">★</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- if block.settings.verified -%}
+                <span class="buren-reviews__verified">✓ Compra verificada</span>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.review_title != blank -%}
+              <h3 class="buren-reviews__card-title">{{ block.settings.review_title }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.review_text != blank -%}
+              <p class="buren-reviews__card-text">{{ block.settings.review_text }}</p>
+            {%- endif -%}
+
+            {%- if has_images -%}
+              <div class="buren-reviews__thumbnails">
+                {%- if block.settings.image_1 -%}
+                  <button
+                    class="buren-reviews__thumb-btn"
+                    data-lightbox="{{ block.id }}"
+                    data-index="0"
+                    aria-label="Ver imagen 1"
+                  >
+                    <img
+                      src="{{ block.settings.image_1 | image_url: width: 120 }}"
+                      alt="{{ block.settings.image_1.alt | default: 'Imagen de reseña' }}"
+                      width="120"
+                      height="120"
+                      loading="lazy"
+                    >
+                  </button>
+                {%- endif -%}
+                {%- if block.settings.image_2 -%}
+                  <button
+                    class="buren-reviews__thumb-btn"
+                    data-lightbox="{{ block.id }}"
+                    data-index="1"
+                    aria-label="Ver imagen 2"
+                  >
+                    <img
+                      src="{{ block.settings.image_2 | image_url: width: 120 }}"
+                      alt="{{ block.settings.image_2.alt | default: 'Imagen de reseña' }}"
+                      width="120"
+                      height="120"
+                      loading="lazy"
+                    >
+                  </button>
+                {%- endif -%}
+                {%- if block.settings.image_3 -%}
+                  <button
+                    class="buren-reviews__thumb-btn"
+                    data-lightbox="{{ block.id }}"
+                    data-index="2"
+                    aria-label="Ver imagen 3"
+                  >
+                    <img
+                      src="{{ block.settings.image_3 | image_url: width: 120 }}"
+                      alt="{{ block.settings.image_3.alt | default: 'Imagen de reseña' }}"
+                      width="120"
+                      height="120"
+                      loading="lazy"
+                    >
+                  </button>
+                {%- endif -%}
+              </div>
+
+              <div class="buren-lightbox" id="lightbox-{{ block.id }}" role="dialog" aria-modal="true" aria-label="Imagen ampliada" hidden>
+                <button class="buren-lightbox__close" aria-label="Cerrar">✕</button>
+                <button class="buren-lightbox__prev" aria-label="Anterior">‹</button>
+                <button class="buren-lightbox__next" aria-label="Siguiente">›</button>
+                <div class="buren-lightbox__content">
+                  <img class="buren-lightbox__img" src="" alt="" width="800" height="800">
+                </div>
+                <div class="buren-lightbox__images" hidden>
+                  {%- if block.settings.image_1 -%}
+                    <img
+                      data-src="{{ block.settings.image_1 | image_url: width: 1200 }}"
+                      alt="{{ block.settings.image_1.alt | default: 'Imagen de reseña' }}"
+                    >
+                  {%- endif -%}
+                  {%- if block.settings.image_2 -%}
+                    <img
+                      data-src="{{ block.settings.image_2 | image_url: width: 1200 }}"
+                      alt="{{ block.settings.image_2.alt | default: 'Imagen de reseña' }}"
+                    >
+                  {%- endif -%}
+                  {%- if block.settings.image_3 -%}
+                    <img
+                      data-src="{{ block.settings.image_3 | image_url: width: 1200 }}"
+                      alt="{{ block.settings.image_3.alt | default: 'Imagen de reseña' }}"
+                    >
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            <div class="buren-reviews__card-footer">
+              <div class="buren-reviews__author">
+                <span class="buren-reviews__author-initial">
+                  {{- block.settings.author_name | slice: 0 | upcase -}}
+                </span>
+                <div>
+                  <p class="buren-reviews__author-name">{{ block.settings.author_name }}</p>
+                  {%- if block.settings.author_location != blank -%}
+                    <p class="buren-reviews__author-location">{{ block.settings.author_location }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+              {%- if block.settings.review_date != blank -%}
+                <time class="buren-reviews__date">{{ block.settings.review_date }}</time>
+              {%- endif -%}
+            </div>
+
+          </article>
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Reseñas de clientes",
+  "tag": "section",
+  "class": "section",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Lo que dicen nuestros clientes",
+      "label": "Título de la sección"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "default": true,
+      "label": "Mostrar resumen de calificación"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding superior",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding inferior",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Reseña",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Calificación (estrellas)",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "review_title",
+          "label": "Título de la reseña",
+          "placeholder": "Excelente producto"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Texto de la reseña",
+          "placeholder": "Escribir comentario del cliente..."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Nombre del cliente",
+          "default": "Cliente"
+        },
+        {
+          "type": "text",
+          "id": "author_location",
+          "label": "Ciudad / País (opcional)",
+          "placeholder": "Santiago, Chile"
+        },
+        {
+          "type": "text",
+          "id": "review_date",
+          "label": "Fecha",
+          "placeholder": "Marzo 2025"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Compra verificada",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Imágenes del cliente (opcional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Imagen 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Imagen 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Imagen 3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reseñas de clientes",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_title": "¡Bacán, al fin tengo todo ordenado!",
+            "review_text": "Tenía la embarrada con las zapatillas tiradas por todos lados del closet. Le compré estas cajitas y ahora están todas apiladitas una encima de la otra. Ahorra un montón de espacio. Recomendadísimo.",
+            "author_name": "Valentina R.",
+            "author_location": "Santiago, Chile",
+            "review_date": "Febrero 2025",
+            "verified": true
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_title": "Por fin el clóset dejó de ser un caos",
+            "review_text": "Compré 6 cajas pa organizar la ropa de temporada y quedé con la boca abierta. Son resistentes, se ven elegantes y el plástico es buena calidad. Llegaron súper bien embaladas y antes del plazo. Voy a pedir más.",
+            "author_name": "Diego F.",
+            "author_location": "Viña del Mar, Chile",
+            "review_date": "Enero 2025",
+            "verified": true
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "review_title": "Cumplen al 100, solo me faltó pedir más",
+            "review_text": "Las usé para organizar las cosas de la cocina y quedaron perfectas. Caben harto más de lo que uno cree y la tapa cierra bien. Le saco una estrella nomás porque quería una talla más grande, pero eso es culpa mía jaja. Igual las volvería a comprar.",
+            "author_name": "Francisca M.",
+            "author_location": "Concepción, Chile",
+            "review_date": "Diciembre 2024",
+            "verified": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

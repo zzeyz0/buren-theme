@@ -1,0 +1,168 @@
+{% comment %}
+  Renders the accepted payment methods under the buy buttons.
+
+  Gateways activos en el checkout (verificados en 2026-09):
+    - Transbank Webpay  -> webpay, visa, master, american_express
+    - Mercado Pago      -> mercadopago, visa, master, american_express, diners_club
+
+  Ambos son OffsiteProvider de app, por eso `shop.enabled_payment_types` viene
+  vacio y el footer de Dawn no muestra nada. Las marcas de tarjeta si tienen
+  SVG oficial en Shopify; los logos de las pasarelas son assets del tema
+  (buren-logo-webpay.svg / buren-logo-mercadopago.svg) y se pueden reemplazar
+  desde Personalizar tema > Medios de pago (Büren).
+
+  Los logos van en <img>, no inline: el SVG de Webpay trae clases .st0/.st1 que
+  se filtrarian al CSS global si se insertaran en la pagina.
+
+  Accepts:
+  - context: 'product' (por defecto) o 'footer'. En el footer el bloque se
+    controla con el ajuste "Mostrar iconos de pago" de la seccion, por eso ahi
+    no se revisa buren_payment_icons_enabled.
+
+  Usage:
+  {% render 'buren-payment-icons' %}
+  {% render 'buren-payment-icons', context: 'footer' %}
+{% endcomment %}
+
+{%- liquid
+  assign ctx = context | default: 'product'
+
+  if ctx == 'footer'
+    assign hide_block = false
+  else
+    assign hide_block = false
+    if settings.buren_payment_icons_enabled == false
+      assign hide_block = true
+    endif
+  endif
+-%}
+
+{%- unless hide_block -%}
+  {%- style -%}
+    .buren-payments {
+      margin-top: 1.6rem;
+      text-align: center;
+    }
+
+    .buren-payments__note {
+      margin: 0 0 0.8rem;
+      font-size: 1.2rem;
+      line-height: 1.4;
+      color: rgba(var(--color-foreground), 0.7);
+    }
+
+    .buren-payments__list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .buren-payments__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.8rem;
+      padding: 0 0.6rem;
+      border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+      border-radius: 0.4rem;
+      background: rgb(var(--color-background));
+    }
+
+    .buren-payments__item svg,
+    .buren-payments__item img {
+      display: block;
+      width: auto;
+      height: 1.8rem;
+      max-width: 7rem;
+      object-fit: contain;
+    }
+
+    .buren-payments__badge {
+      padding: 0 0.4rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      color: rgb(var(--color-foreground));
+    }
+
+    .buren-payments--footer {
+      margin-top: 0;
+      width: 100%;
+    }
+
+    .buren-payments--footer .buren-payments__note {
+      margin-bottom: 1rem;
+    }
+
+    @media screen and (min-width: 750px) {
+      .buren-payments--footer,
+      .buren-payments--footer .buren-payments__list {
+        justify-content: flex-end;
+      }
+
+      .buren-payments--footer {
+        text-align: right;
+      }
+    }
+  {%- endstyle -%}
+
+  <div class="buren-payments{% if ctx == 'footer' %} buren-payments--footer{% endif %}">
+    {%- if settings.buren_payment_note != blank -%}
+      <p class="buren-payments__note">{{ settings.buren_payment_note }}</p>
+    {%- endif -%}
+
+    <ul class="buren-payments__list" role="list">
+      {%- comment -%} Pasarelas: logo subido, asset del tema, o badge de texto {%- endcomment -%}
+      <li class="buren-payments__item">
+        {%- if settings.buren_logo_webpay != blank -%}
+          {{
+            settings.buren_logo_webpay
+            | image_url: height: 36
+            | image_tag: alt: 'Webpay', loading: 'lazy', widths: '72, 108, 144'
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'buren-logo-webpay.svg' | asset_url }}"
+            alt="Webpay"
+            width="300"
+            height="101"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </li>
+
+      <li class="buren-payments__item">
+        {%- if settings.buren_logo_mercadopago != blank -%}
+          {{
+            settings.buren_logo_mercadopago
+            | image_url: height: 36
+            | image_tag: alt: 'Mercado Pago', loading: 'lazy', widths: '72, 108, 144'
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'buren-logo-mercadopago.svg' | asset_url }}"
+            alt="Mercado Pago"
+            width="1020"
+            height="411"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </li>
+
+      {%- comment -%} Marcas de tarjeta: SVG oficiales de Shopify {%- endcomment -%}
+      {%- assign card_brands = 'visa,master,american_express,diners_club' | split: ',' -%}
+      {%- for brand in card_brands -%}
+        {%- assign brand_svg = brand | payment_type_svg_tag: class: 'icon icon--full-color' -%}
+        {%- if brand_svg != blank -%}
+          <li class="buren-payments__item">{{ brand_svg }}</li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endunless -%}

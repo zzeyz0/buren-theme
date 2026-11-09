@@ -1,0 +1,344 @@
+{%- style -%}
+  .buren-brand-statement {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: {{ section.settings.min_height }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .buren-brand-statement {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      min-height: {{ section.settings.min_height }}px;
+    }
+  }
+
+  .buren-brand-statement__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .buren-brand-statement__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.image_position }};
+    display: block;
+  }
+
+  .buren-brand-statement__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});
+  }
+
+  .buren-brand-statement__content {
+    position: relative;
+    z-index: 2;
+    max-width: {{ section.settings.content_max_width }}px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: {{ section.settings.text_alignment }};
+  }
+
+  .buren-brand-statement__text {
+    font-size: clamp(1.25rem, 3vw, {{ section.settings.font_size }}rem);
+    font-weight: {{ section.settings.font_weight }};
+    line-height: 1.5;
+    letter-spacing: 0.04rem;
+    margin: 0;
+    {%- if section.settings.image -%}
+      color: {{ section.settings.text_color_with_image }};
+    {%- else -%}
+      color: {{ section.settings.text_color_no_image }};
+    {%- endif -%}
+  }
+
+  .buren-brand-statement__text strong {
+    font-weight: 700;
+  }
+
+  .buren-brand-statement__heading {
+    font-size: clamp(2.4rem, 5vw, {{ section.settings.heading_size }}rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.2rem;
+    text-wrap: balance;
+    {%- if section.settings.image -%}
+      color: {{ section.settings.text_color_with_image }};
+    {%- else -%}
+      color: {{ section.settings.text_color_no_image }};
+    {%- endif -%}
+  }
+
+  .buren-brand-statement__cta {
+    margin-top: 2.4rem;
+  }
+
+  .buren-brand-statement__cta .button {
+    min-width: 24rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .buren-brand-statement__cta .button {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+{%- endstyle -%}
+
+<div class="buren-brand-statement">
+
+  {%- if section.settings.image -%}
+    <div class="buren-brand-statement__bg">
+      {{
+        section.settings.image
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '750, 1100, 1500, 2000',
+          sizes: '100vw',
+          alt: section.settings.image.alt | default: ''
+      }}
+    </div>
+    {%- if section.settings.overlay_opacity > 0 -%}
+      <div class="buren-brand-statement__overlay"></div>
+    {%- endif -%}
+  {%- else -%}
+    <div class="buren-brand-statement__bg" style="background-color: var(--buren-green);"></div>
+  {%- endif -%}
+
+  <div class="buren-brand-statement__content">
+    {%- if section.settings.heading != blank -%}
+      <{{ section.settings.heading_tag }} class="buren-brand-statement__heading">
+        {{- section.settings.heading | escape -}}
+      </{{ section.settings.heading_tag }}>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <p class="buren-brand-statement__text">{{ section.settings.text }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+      <div class="buren-brand-statement__cta">
+        <a
+          href="{{ section.settings.button_link }}"
+          class="button{% unless section.settings.button_style_primary %} button--secondary{% endunless %}"
+        >
+          {{- section.settings.button_label | escape -}}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Brand Statement",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titular",
+      "info": "En la portada debe ser H1 (solo uno por página)."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Etiqueta del titular",
+      "default": "h1",
+      "options": [
+        { "value": "h1", "label": "H1 (usar en la portada)" },
+        { "value": "h2", "label": "H2" },
+        { "value": "p",  "label": "Sin jerarquía" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 2,
+      "max": 7,
+      "step": 1,
+      "unit": "rem",
+      "label": "Tamaño del titular (máximo)",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_primary",
+      "label": "Estilo sólido (primario)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Texto"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>En <strong>Büren</strong> buscamos alrededor del mundo productos creativos, funcionales e innovadores que realmente mejoran tu día a día.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Imagen de fondo"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de fondo"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posición de la imagen",
+      "default": "center center",
+      "options": [
+        { "value": "top left",     "label": "Arriba izquierda" },
+        { "value": "top center",   "label": "Arriba centro" },
+        { "value": "top right",    "label": "Arriba derecha" },
+        { "value": "center left",  "label": "Centro izquierda" },
+        { "value": "center center","label": "Centro" },
+        { "value": "center right", "label": "Centro derecha" },
+        { "value": "bottom left",  "label": "Abajo izquierda" },
+        { "value": "bottom center","label": "Abajo centro" },
+        { "value": "bottom right", "label": "Abajo derecha" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Oscuridad del overlay",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Tipografía"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "rem",
+      "label": "Tamaño de fuente (máximo)",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Peso de fuente",
+      "default": "400",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "text_color_with_image",
+      "label": "Color de texto (con imagen)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color_no_image",
+      "label": "Color de texto (sin imagen)",
+      "default": "#111111"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alineación del texto",
+      "default": "center",
+      "options": [
+        { "value": "left",   "label": "Izquierda" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right",  "label": "Derecha" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Dimensiones"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 100,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Altura mínima",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Ancho máximo del texto",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding superior",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding inferior",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Statement"
+    }
+  ]
+}
+{% endschema %}
