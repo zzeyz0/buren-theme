@@ -54,7 +54,12 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_gift_card_recipient": true,
+            "buren_trust_1": "Envío a todo Chile",
+            "buren_trust_2": "Garantía legal de 6 meses",
+            "buren_trust_3": "10 días de retracto en compras online",
+            "buren_trust_4": "Pago 100% seguro",
+            "buren_trust_link_label": "Ver condiciones de cambios y devoluciones"
           }
         },
         "description": {

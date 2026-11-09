@@ -355,6 +355,21 @@ button[type="submit"],
   margin-top: 1rem;
 }
 
+.buren-pdp-trust__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buren-pdp-trust__link {
+  align-self: flex-start;
+  font-size: 1.3rem;
+  color: var(--buren-black);
+}
+
 .buren-pdp-trust__item {
   display: flex;
   align-items: center;

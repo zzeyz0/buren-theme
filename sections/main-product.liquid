@@ -485,11 +485,29 @@
                   section_id: section.id,
                   show_pickup_availability: true
                 -%}
-                <div class="buren-pdp-trust">
-                  <span class="buren-pdp-trust__item">Envío a todo Chile</span>
-                  <span class="buren-pdp-trust__item">Devolución en 30 días</span>
-                  <span class="buren-pdp-trust__item">Pago 100% seguro</span>
-                </div>
+                {%- liquid
+                  assign trust_items = ''
+                  for i in (1..4)
+                    assign trust_key = 'buren_trust_' | append: i
+                    assign trust_text = block.settings[trust_key] | strip | escape
+                    if trust_text != blank
+                      assign trust_items = trust_items | append: '<li class="buren-pdp-trust__item">' | append: trust_text | append: '</li>'
+                    endif
+                  endfor
+                  assign trust_link_label = block.settings.buren_trust_link_label | strip
+                -%}
+                {%- if trust_items != blank -%}
+                  <div class="buren-pdp-trust">
+                    <ul class="buren-pdp-trust__list" role="list">
+                      {{- trust_items -}}
+                    </ul>
+                    {%- if trust_link_label != blank and shop.refund_policy != blank -%}
+                      <a class="buren-pdp-trust__link link" href="{{ shop.refund_policy.url }}">
+                        {{- trust_link_label | escape -}}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
                 <div class="buren-sticky-atc" id="buren-sticky-atc-{{ section.id }}" aria-hidden="true">
                   <button
                     type="button"
@@ -939,6 +957,44 @@
           "default": true,
           "label": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.label",
           "info": "t:sections.main-product.blocks.buy_buttons.settings.show_gift_card_recipient.info"
+        },
+        {
+          "type": "header",
+          "content": "Garantías bajo el botón (Büren)"
+        },
+        {
+          "type": "paragraph",
+          "content": "Cada texto debe coincidir con las políticas de la tienda (Configuración > Políticas). Deja un campo vacío para ocultarlo."
+        },
+        {
+          "type": "text",
+          "id": "buren_trust_1",
+          "label": "Garantía 1",
+          "default": "Envío a todo Chile"
+        },
+        {
+          "type": "text",
+          "id": "buren_trust_2",
+          "label": "Garantía 2",
+          "default": "Garantía legal de 6 meses"
+        },
+        {
+          "type": "text",
+          "id": "buren_trust_3",
+          "label": "Garantía 3",
+          "default": "10 días de retracto en compras online"
+        },
+        {
+          "type": "text",
+          "id": "buren_trust_4",
+          "label": "Garantía 4",
+          "default": "Pago 100% seguro"
+        },
+        {
+          "type": "text",
+          "id": "buren_trust_link_label",
+          "label": "Texto del enlace a la política de reembolso",
+          "default": "Ver condiciones de cambios y devoluciones"
         }
       ]
     },
