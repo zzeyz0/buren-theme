@@ -134,17 +134,18 @@
 }
 
 /* Logos más visibles en la barra. El SVG de Mercado Pago trae mucho aire
-   interno, por eso se le da más alto que a Webpay. */
+   interno, por eso se le da más alto que a Webpay.
+   Tamaños reducidos un 30% (2026-11-09, pedido del dueño). */
 .buren-trust .buren-payments--trust .buren-payments__item {
-  height: 3.6rem;
-  padding: 0 0.8rem;
+  height: 2.5rem;
+  padding: 0 0.6rem;
 }
 
 .buren-trust .buren-payments--trust .buren-payments__item img {
-  height: 2.4rem;
-  max-width: 9rem;
+  height: 1.7rem;
+  max-width: 6.3rem;
 }
 
 .buren-trust .buren-payments--trust .buren-payments__item img[alt="Mercado Pago"] {
-  height: 3.4rem;
+  height: 2.4rem;
 }
