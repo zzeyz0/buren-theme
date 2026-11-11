@@ -94,6 +94,16 @@ button[type="submit"],
   animation: buren-marquee var(--buren-marquee-duration, 30s) linear infinite;
 }
 
+/* Mobile: el texto no entra desde fuera de pantalla; queda con márgenes
+   a ambos lados y el ciclo dura ≈6s (duración fija en buren-ux.js). */
+@media screen and (max-width: 749px) {
+  .announcement-bar__message span,
+  .announcement-bar__message p {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
 /* ----------------------------------------------------------------
    5. PRODUCT CARDS — estilo ACRI: sin borde, imagen flush
    ---------------------------------------------------------------- */

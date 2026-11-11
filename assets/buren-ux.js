@@ -85,9 +85,12 @@
     if (!text) return;
     // Velocidad previa ≈ 44 px/s (18s sobre ≈ 800px); +15% ≈ 51 px/s.
     const PX_PER_SEC = 51;
+    const MOBILE_CYCLE_SEC = 6; // mobile (<750px): ciclo fijo ≈6s
+    const mobile = window.matchMedia('(max-width: 749px)');
     function setDuration() {
-      const distance = text.scrollWidth; // ancho de la barra + ancho del texto
-      msg.style.setProperty('--buren-marquee-duration', (distance / PX_PER_SEC).toFixed(1) + 's');
+      const distance = text.scrollWidth; // desktop: barra + texto · mobile: texto + márgenes
+      const sec = mobile.matches ? MOBILE_CYCLE_SEC : distance / PX_PER_SEC;
+      msg.style.setProperty('--buren-marquee-duration', sec.toFixed(1) + 's');
     }
     setDuration();
     let t;
