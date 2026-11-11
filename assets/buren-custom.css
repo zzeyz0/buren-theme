@@ -198,6 +198,36 @@ button[type="submit"],
   font-weight: 500;
 }
 
+/* Menú principal: tamaño legible + centrado (desktop).
+   Nota: 1rem ≈ 11px en este tema (ver DESIGN_SYSTEM.md), por eso 0.875rem
+   renderizaba ~9.6px. 1.5rem ≈ 16.5px. */
+.header__inline-menu .header__menu-item,
+.header__inline-menu .header-menu-item__heading {
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 990px) {
+  /* Logo a la izquierda · menú al centro · íconos a la derecha */
+  .header--middle-center:not(.drawer-menu) {
+    grid-template-areas: 'heading navigation icons';
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .header--middle-center .header__heading,
+  .header--middle-center .header__heading-link {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .header--middle-center .header__inline-menu {
+    justify-self: center;
+  }
+
+  .header--middle-center .header__inline-menu > .list-menu--inline {
+    justify-content: center;
+  }
+}
+
 /* ----------------------------------------------------------------
    7. SECCIONES — alternancia verde/beige
    ---------------------------------------------------------------- */
