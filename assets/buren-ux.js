@@ -80,9 +80,21 @@
      4. ANNOUNCEMENT BAR — rotación de mensajes
      ---------------------------------------------------------------- */
   function initAnnouncementRotation() {
-    const bar = document.querySelector('.announcement-bar__message');
-    if (!bar) return;
-    // La animación CSS marquee ya está activa vía buren-custom.css
+    const msg = document.querySelector('.announcement-bar__message');
+    const text = msg && msg.querySelector('span');
+    if (!text) return;
+    // Velocidad previa ≈ 44 px/s (18s sobre ≈ 800px); +15% ≈ 51 px/s.
+    const PX_PER_SEC = 51;
+    function setDuration() {
+      const distance = text.scrollWidth; // ancho de la barra + ancho del texto
+      msg.style.setProperty('--buren-marquee-duration', (distance / PX_PER_SEC).toFixed(1) + 's');
+    }
+    setDuration();
+    let t;
+    window.addEventListener('resize', function () {
+      clearTimeout(t);
+      t = setTimeout(setDuration, 150);
+    });
   }
 
   /* ----------------------------------------------------------------

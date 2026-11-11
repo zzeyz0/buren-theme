@@ -64,20 +64,34 @@ button[type="submit"],
 /* ----------------------------------------------------------------
    4. BARRA DE ANUNCIO — animación scrolling
    ---------------------------------------------------------------- */
+.announcement-bar__announcement,
+.announcement-bar__message {
+  width: 100%;
+}
+
+.announcement-bar__link {
+  display: block;
+}
+
 .announcement-bar__message {
   overflow: hidden;
   white-space: nowrap;
 }
 
+/* El texto recorre TODO el ancho de la barra: arranca fuera por la derecha
+   (padding-left: 100%) y sale por la izquierda. La duración la ajusta
+   buren-ux.js (initAnnouncementRotation) para mantener una velocidad
+   constante en px/s; 30s es solo el valor de respaldo. */
 @keyframes buren-marquee {
-  0%   { transform: translateX(100%); }
+  0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
 
 .announcement-bar__message span,
 .announcement-bar__message p {
   display: inline-block;
-  animation: buren-marquee 18s linear infinite;
+  padding-left: 100%;
+  animation: buren-marquee var(--buren-marquee-duration, 30s) linear infinite;
 }
 
 /* ----------------------------------------------------------------
