@@ -22,11 +22,32 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- liquid
+      assign seo_description = page_description
 
-    {% render 'meta-tags' %}
+      if seo_description == blank
+        case request.page_type
+          when 'product'
+            assign seo_description = product.description
+          when 'collection'
+            assign seo_description = collection.description
+          when 'article'
+            assign seo_description = article.excerpt_or_content
+          when 'page'
+            assign seo_description = page.content
+          when 'index'
+            assign seo_description = shop.description | default: 'Descubre productos creativos, funcionales e innovadores para tu día a día. Envíos a todo Chile.'
+        endcase
+      endif
+
+      assign seo_description = seo_description | strip_html | strip_newlines | strip | truncate: 160
+    -%}
+
+    {%- if seo_description != blank -%}
+      <meta name="description" content="{{ seo_description | escape }}">
+    {%- endif -%}
+
+    {% render 'meta-tags', seo_description: seo_description %}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
@@ -310,6 +331,7 @@
     {%- endif -%}
 
     {% sections 'header-group' %}
+    {% render 'buren-breadcrumbs' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}

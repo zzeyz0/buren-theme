@@ -1,0 +1,68 @@
+{%- liquid
+  assign breadcrumb_title = ''
+  assign breadcrumb_parent_title = ''
+  assign breadcrumb_parent_url = ''
+
+  case request.page_type
+    when 'product'
+      assign breadcrumb_title = product.title
+      if collection != blank
+        assign breadcrumb_parent_title = collection.title
+        assign breadcrumb_parent_url = collection.url
+      endif
+    when 'collection'
+      assign breadcrumb_title = collection.title
+    when 'page'
+      assign breadcrumb_title = page.title
+    when 'blog'
+      assign breadcrumb_title = blog.title
+    when 'article'
+      assign breadcrumb_title = article.title
+      assign breadcrumb_parent_title = blog.title
+      assign breadcrumb_parent_url = blog.url
+  endcase
+
+  assign current_position = 2
+  if breadcrumb_parent_title != blank and breadcrumb_parent_url != blank
+    assign current_position = 3
+  endif
+-%}
+
+{%- if breadcrumb_title != blank -%}
+  <nav class="buren-breadcrumbs page-width" aria-label="Migas de pan">
+    <ol class="buren-breadcrumbs__list" role="list">
+      <li><a href="{{ routes.root_url }}">Inicio</a></li>
+      {%- if breadcrumb_parent_title != blank and breadcrumb_parent_url != blank -%}
+        <li><a href="{{ breadcrumb_parent_url }}">{{ breadcrumb_parent_title | escape }}</a></li>
+      {%- endif -%}
+      <li aria-current="page"><span>{{ breadcrumb_title | escape }}</span></li>
+    </ol>
+  </nav>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": {{ request.origin | append: routes.root_url | json }}
+        }{% if breadcrumb_parent_title != blank and breadcrumb_parent_url != blank %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ breadcrumb_parent_title | json }},
+          "item": {{ request.origin | append: breadcrumb_parent_url | json }}
+        }{% endif %},
+        {
+          "@type": "ListItem",
+          "position": {{ current_position }},
+          "name": {{ breadcrumb_title | json }},
+          "item": {{ canonical_url | json }}
+        }
+      ]
+    }
+  </script>
+{%- endif -%}
