@@ -32,6 +32,24 @@
       );
 
       observer.observe(originalBtn);
+
+      // Reflejar el estado real del botón principal (Agotado / No disponible / cargando)
+      const stickyInner = stickyBtn.querySelector('button');
+      const syncState = () => {
+        if (!stickyInner) return;
+        const label = originalBtn.querySelector('span');
+        const text = (label ? label.textContent : originalBtn.textContent).trim();
+        if (text) stickyInner.textContent = text;
+        stickyInner.disabled = originalBtn.disabled || originalBtn.getAttribute('aria-disabled') === 'true';
+      };
+      syncState();
+      new MutationObserver(syncState).observe(originalBtn, {
+        attributes: true,
+        attributeFilter: ['disabled', 'aria-disabled'],
+        childList: true,
+        subtree: true,
+        characterData: true
+      });
     });
   }
 
